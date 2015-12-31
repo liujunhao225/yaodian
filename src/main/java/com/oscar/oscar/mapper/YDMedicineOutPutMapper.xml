@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "./mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oscar.oscar.service.OutPutLogMapper">
+    
+	<resultMap type="com.oscar.oscar.bean.OutPutLogBean" id="output">
+	<result column="log_id" property="logId"/>
+	<result column="medicine_id" property="medicineId"/>
+	<result column="c_time" property="ctime"/>
+	<result column="sell_price" property="sellPrice"/>
+	<result column="sells_count" property="sellsCount"/>
+	<result column="sells_day" property="sellsDay"/>
+	</resultMap>
+	<insert id="addLog" parameterType="com.oscar.oscar.bean.OutPutLogBean">
+	   INSERT INTO yd_medicine_output_log (medicine_id,c_time,sell_price,sells_count,sells_day) VALUES(
+	   #{medicineId},#{ctime},#{sellPrice},#{sellsCount},#{sellsDay});
+	</insert>
+	<select id="getlist" resultMap="output">
+	    select sum(sell_price*sells_count) sell_price ,sells_day  from yd_medicine_output_log group by sells_day 
+	</select>
+	<select id="getlistCount" resultType="int">
+	    SELECT COUNT(DISTINCT(sells_day)) FROM yd_medicine_output_log
+	</select>
+	
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "./mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oscar.oscar.service.MedicineInfoMapper">
+    
+	<resultMap type="com.oscar.oscar.bean.MedicineInfoBean" id="medicineInfo">
+		<result column="medicine_id" property="medicineId" />
+		<result column="medicine_name" property="medicineName" />
+		<result column="medicine_bar_code" property="medicineBarCode" />
+		<result column="medicine_base_price" property="medicineBasePrice" />
+		<result column="medicine_sells_price" property="medicineSellsPrice" />
+	</resultMap>
+	<select id="getList" parameterType="com.oscar.oscar.bean.MedicineInfoBean" resultMap="medicineInfo">
+	  SELECT medicine_id, medicine_name,medicine_bar_code,medicine_base_price,medicine_sells_price FROM yd_medicine_info WHERE 1=1 
+	  <if test="medicineName !=null and medicineName!=''">
+	      and medicine_name like CONCAT('${medicineName}','%' )  
+	  </if>
+	  <if test="medicineBarCode !=null and medicineBarCode !=''">
+	      and medicine_bar_code=#{medicineBarCode}
+	  </if>
+	</select>
+	<select id="getListCount"  parameterType="com.oscar.oscar.bean.MedicineInfoBean" resultType="int">
+	      SELECT count(*) FROM yd_medicine_info WHERE 1=1 
+	  <if test="medicineName !=null and medicineName !=''">
+	      and medicine_name like CONCAT('${medicineName}','%' )  
+	  </if>
+	  <if test="medicineBarCode !=null and medicineBarCode !=''">
+	      and medicine_bar_code=#{medicineBarCode}
+	  </if>
+	</select>
+	<insert id="addMedicine" parameterType="com.oscar.oscar.bean.MedicineInfoBean" useGeneratedKeys="true" keyProperty="medicine_id">
+	   INSERT INTO yd_medicine_info (medicine_name,medicine_bar_code,medicine_base_price,medicine_sells_price)
+	   values(#{medicineName},#{medicineBarCode},#{medicineBasePrice},#{medicineSellsPrice})
+	</insert>
+	<update id="updateMedicineInfo"  parameterType="com.oscar.oscar.bean.MedicineInfoBean">
+	    update yd_medicine_info set medicine_id =#{medicineId}
+	    <if test="medicineName !=null and medicineName!=''">
+	        ,medicine_name=#{medicineName}
+	    </if>
+	    <if test="medicineBasePrice !=null and medicineBasePrice !=''">
+	        ,medicine_base_price=#{medicineBasePrice}
+	    </if>
+	    <if test="medicineSellsPrice !=null and medicineSellsPrice !=''">
+	        ,medicine_sells_price=#{medicineSellsPrice}
+	    </if>
+	     where medicine_id =#{medicineId} 
+	</update>
+	<delete id="deleteMedicine">
+	    delete from yd_medicine_info where medicine_id = #{medicineId} 
+	</delete>
+		
+	
+</mapper>

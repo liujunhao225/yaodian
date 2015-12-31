@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "./mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oscar.oscar.service.MedicineInfoMapper">
+    
+	<resultMap type="com.oscar.oscar.bean.InputLogBean" id="inputlog">
+	    
+	<result column="log_id" property="logId"/>
+	<result column="c_time" property="ctime"/>
+	<result column="input_count" property="count"/>
+	<result column="input_price" property="inputPrice"/>
+	<result column="medicine_id" property="medicineId"/>
+	</resultMap>
+	<insert id="addInputLog" parameterType="com.oscar.oscar.bean.InputLogBean">
+	    INSERT INTO yd_medicine_input_log (medicine_id,input_count,input_price,c_time) VALUES(
+	    #{medicineId},#{count},#{inputPrice},#{ctime}
+	    )
+	</insert>
+	
+</mapper>

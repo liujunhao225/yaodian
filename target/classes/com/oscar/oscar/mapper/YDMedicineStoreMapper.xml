@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "./mybatis-3-mapper.dtd">
+
+<mapper namespace="com.oscar.oscar.service.MedicineStoreMapper">
+    
+	<resultMap type="com.oscar.oscar.bean.MedicineStoreBean" id="storeBean">
+	    <id column="id" property="id"/>
+	   	<result column="medicine_id" property="medicineId"/>
+	   	<result column="left_num" property="leftNum"/>
+	   	<association property="medicineInfoBean" javaType="com.oscar.oscar.bean.MedicineInfoBean">
+	   	    <result column="medicine_base_price" property="medicineBasePrice"/>
+	   	    <result column="medicine_sells_price" property="medicineSellsPrice"/>
+	   	    <result column="medicine_name" property="medicineName"/>
+	   	    <result column="medicine_bar_code" property="medicineBarCode"/>
+	   	</association>
+	</resultMap>
+	<select id="getMedicineInfoByBarcode" resultMap="storeBean">
+	    SELECT a.id,b.medicine_id,left_num ,medicine_base_price,medicine_sells_price,
+	    medicine_name,medicine_bar_code FROM yd_medicine_info b LEFT JOIN yd_medicine_store a
+	     ON a.medicine_id=b.medicine_id  WHERE b.medicine_bar_code=#{barCode};
+	</select>
+	<update id="inputChange">
+	    UPDATE yd_medicine_store SET left_num =#{leftNum} WHERE medicine_id	=#{medicineId}
+	</update>
+	<update id="outputChange">
+	    UPDATE yd_medicine_store SET left_num=left_num-#{leftNum} WHERE medicine_id	=#{medicineId}
+	</update>
+	<delete id="deleteStore">
+	    delete from yd_medicine_store where medicine_id	=#{medicineId}
+	</delete>
+	<insert id="addToStore">
+	    insert into yd_medicine_store(medicine_id,left_num) values(#{medicineId},#{leftNum} );
+	</insert>
+	
+</mapper>
